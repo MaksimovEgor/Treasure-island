@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Treasure</title>
+    <link rel="stylesheet" href="external.css">
+
+</head>
+
+<body>
+<h1>Найди клад!</h1>
+
+
+<img id="map" src="TreasureMap.png" height="400" width="400"/>
+
+<p id="distance"></p>
+
+<script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+
+
+    <script>
+        const getRandomNumber = function (size) {
+            return Math.floor(Math.random() * size)
+        };
+
+        const getDistance = function (event, target) {
+            const diffX = event.offsetX - target.x
+            const diffY = event.offsetY - target.y
+            return Math.sqrt((diffX * diffX) + (diffY * diffY))
+        };
+
+        const getDistanceHint = function (distance) {
+            if (distance < 10) {
+                return ("Обожжешься! У Вас осталось: " + (30 - clicks) + " ходов!")
+            } else if (distance < 20) {
+                return ("Очень горячо! У Вас осталось: " + (30 - clicks) + " ходов!")
+            } else if (distance < 40) {
+                return ("Горячо! У Вас осталось: " + (30 - clicks) + " ходов!")
+            } else if (distance < 80) {
+                return ("Тепло! У Вас осталось: " + (30 - clicks) + " ходов!")
+            } else if (distance < 160) {
+                return ("Холодно! У Вас осталось: " + (30 - clicks) + " ходов!")
+            } else if (distance < 320) {
+                return ("Очень холодно! У Вас осталось: " + (30 - clicks) + " ходов!")
+            } else if (distance < 400) {
+                return ("Очень-очень холодно! У Вас осталось: " + (30 - clicks) + " ходов!")
+            } else if (distance < 500) {
+                return ("Брррррррр! У Вас осталось: " + (30 - clicks) + " ходов!")
+            } else {
+                return ("Замерзнешь! У Вас осталось: " + (30 - clicks) + " ходов!")
+            }
+        }
+
+
+        const width = 600
+        const height = 600
+        let clicks = 0
+
+
+        let target = {
+            x: getRandomNumber(width),
+            y: getRandomNumber(height)
+        }
+
+        const game = $("#map").click(function (event) {
+            clicks++
+            let distance = getDistance(event, target)
+            let distanceHint = getDistanceHint(distance)
+            $("#distance").text(distanceHint)
+            if (distance < 8) {
+                alert("Клад найден! сделано кликов: " + clicks)
+            }
+            if (clicks > 30) {
+                alert("Игра закончена, Вы проиграли!")
+                clearTimeout(game)
+            }
+        })
+
+    </script>
+
+
+</body>
+</html>
